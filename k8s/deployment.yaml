@@ -8,6 +8,10 @@ metadata:
     app: app
 spec:
   replicas: 1
+  # No second pod during a rollout: the apps share a 1Gi quota of memory requests
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxSurge: 0, maxUnavailable: 1 }
   selector:
     matchLabels:
       app: app
