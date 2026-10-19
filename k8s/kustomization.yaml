@@ -1,0 +1,11 @@
+# Argo CD deploys this into namespace 'apps' as acceptance-demo-api / acceptance-demo-app
+# (ADR-0028 in kvm-server). No Ingress: the acceptance test talks to it inside the cluster.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml
+images:
+  # Image Updater sets the newest release X.Y.Z (every green master build is one)
+  - name: registry.internal.bobkubista.com/acceptance-demo
+    newTag: 0.0.0

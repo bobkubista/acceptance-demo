@@ -1,0 +1,6 @@
+# Used only by kvm-server's tests/acceptance/apps-namespace-releases.sh: an app that ships a
+# Namespace must be refused by the github-apps project. Never deploy this on purpose.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml

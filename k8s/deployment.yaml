@@ -1,0 +1,33 @@
+# Names are short: Argo CD prefixes every name with the repo name (<repo>-app) and labels
+# everything app.kubernetes.io/part-of=<repo>, selectors included (ADR-0028).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: registry.internal.bobkubista.com/acceptance-demo   # the release tag comes from Image Updater
+          ports:
+            - containerPort: 8080
+          resources:
+            # All apps share namespace 'apps' with a quota of 1Gi memory requests (ADR-0028)
+            requests: { memory: 96Mi, cpu: 20m }
+            limits: { memory: 160Mi }
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: 8080 }
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: 8080 }
+            initialDelaySeconds: 10
