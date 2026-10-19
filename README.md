@@ -15,8 +15,8 @@ The smallest app that exercises the kvm-server delivery loop (ADR-0028 in
    Image Updater moves it to the newest release within a few minutes.
 4. Roll back: `./lab.sh rollback acceptance-demo <release>` in kvm-server.
 
-`acceptance/namespace/` is a deliberately forbidden manifest for kvm-server's acceptance test
-(an app may not create a Namespace). Nothing deploys it on purpose.
+`acceptance/namespace/` and `acceptance/foreign-namespace/` are deliberately forbidden manifests for kvm-server's acceptance test
+(an app may not create a Namespace, nor objects in another namespace). Nothing deploys them on purpose.
 
 ## Build locally
 

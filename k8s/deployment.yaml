@@ -16,6 +16,10 @@ spec:
       labels:
         app: app
     spec:
+      # Fits Pod Security 'restricted' (namespace apps enforces 'baseline', warns on 'restricted')
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: { type: RuntimeDefault }
       containers:
         - name: app
           image: registry.internal.bobkubista.com/acceptance-demo   # the release tag comes from Image Updater
@@ -25,9 +29,18 @@ spec:
             # All apps share namespace 'apps' with a quota of 1Gi memory requests (ADR-0028)
             requests: { memory: 96Mi, cpu: 20m }
             limits: { memory: 160Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }   # the JVM and most frameworks write temp files
           readinessProbe:
             httpGet: { path: /actuator/health/readiness, port: 8080 }
             initialDelaySeconds: 3
           livenessProbe:
             httpGet: { path: /actuator/health/liveness, port: 8080 }
             initialDelaySeconds: 10
+      volumes:
+        - name: tmp
+          emptyDir: { sizeLimit: 64Mi }

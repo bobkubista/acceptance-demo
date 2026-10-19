@@ -106,6 +106,7 @@ pipeline {
             h=$(mktemp); trap 'rm -f "$h" tag.json' EXIT
             printf 'Authorization: Bearer %s\\n' "$GH_TOKEN" > "$h"
             slug=$(git config --get remote.origin.url | sed -E 's#^(https://github.com/|git@github.com:)##; s#\\.git$##')
+            echo "$slug" | grep -qE '^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$' || { echo "unexpected repo '$slug'"; exit 1; }
             body=$(printf '{"ref": "refs/tags/v%s", "sha": "%s"}' "$VERSION" "$(git rev-parse HEAD)")
             code=$(curl -s -o tag.json -w '%{http_code}' -X POST -H @"$h" \
               -H 'Accept: application/vnd.github+json' -d "$body" "https://api.github.com/repos/$slug/git/refs")
