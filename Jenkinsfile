@@ -5,7 +5,8 @@
 //   - ONE agent pod per pipeline (Jenkins runs one agent pod at a time).
 //   - Image name: registry.internal.bobkubista.com/<repo name, lower-case, [a-z0-9-]>
 //     (or the names listed in k8s/images for multi-image repos).
-//   - Every green master (or main) build is a release (ADR-0028): version <major>.<minor>.<build number>,
+//   - Every green build of the default branch (BRANCH_IS_PRIMARY, set by Jenkins' GitHub
+//     branch source) is a release (ADR-0028): version <major>.<minor>.<build number>,
 //     major.minor from the pom (raise them by hand). The image <version> is pushed first, then
 //     the Git tag v<version>; Argo CD Image Updater deploys the newest release.
 //   - Branches build and test, but push nothing and deploy nothing.
@@ -39,14 +40,14 @@ pipeline {
   }
   stages {
     stage('Build and test') {
-      when { not { expression { env.BRANCH_NAME in ['master', 'main'] } } }
+      when { not { expression { env.BRANCH_IS_PRIMARY == 'true' } } }
       steps {
         sh 'mvn -B -ntp verify'
       }
     }
     // SonarQube Community has no branch analysis: only master is analysed
     stage('Build, test, analyse') {
-      when { expression { env.BRANCH_NAME in ['master', 'main'] } }
+      when { expression { env.BRANCH_IS_PRIMARY == 'true' } }
       steps {
         withSonarQubeEnv('SonarQube') {
           // the checkout belongs to the jnlp user; let git (Sonar blame) read it as root
@@ -56,7 +57,7 @@ pipeline {
       }
     }
     stage('Quality gate') {
-      when { expression { env.BRANCH_NAME in ['master', 'main'] } }
+      when { expression { env.BRANCH_IS_PRIMARY == 'true' } }
       steps {
         timeout(time: 10, unit: 'MINUTES') {
           waitForQualityGate abortPipeline: true   // SonarQube calls back via its webhook
@@ -64,7 +65,7 @@ pipeline {
       }
     }
     stage('Version') {
-      when { expression { env.BRANCH_NAME in ['master', 'main'] } }
+      when { expression { env.BRANCH_IS_PRIMARY == 'true' } }
       steps {
         // 1.4.0-SNAPSHOT in the pom + build 57 -> 1.4.57
         sh '''
@@ -81,7 +82,7 @@ pipeline {
         container('buildkit') {
           // master: push <version>; branches: build only (proves the Dockerfile), push nothing
           sh '''
-            if [ "$BRANCH_NAME" = master ] || [ "$BRANCH_NAME" = main ]; then out="name=${IMAGE}:${VERSION},push=true"
+            if [ "$BRANCH_IS_PRIMARY" = true ]; then out="name=${IMAGE}:${VERSION},push=true"
             else out="name=${IMAGE}:branch,push=false"; fi
             # the Dockerfile may use ARG APP_VERSION to tell the app which release it is
             buildctl-daemonless.sh build \
@@ -97,7 +98,7 @@ pipeline {
     // The tag comes after the image: a tag always points at an image that exists. A failing
     // tag makes the build red. A tag creates no commit, so it triggers no new build.
     stage('Release') {
-      when { expression { env.BRANCH_NAME in ['master', 'main'] } }
+      when { expression { env.BRANCH_IS_PRIMARY == 'true' } }
       steps {
         withCredentials([string(credentialsId: 'github-release-token', variable: 'GH_TOKEN')]) {
           sh '''
