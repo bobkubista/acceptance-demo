@@ -1,8 +1,9 @@
 # acceptance-demo
 
 The smallest app that exercises the kvm-server delivery loop (ADR-0028 in
-[kvm-server](https://github.com/bobkubista/kvm-server)): a Java 25 HTTP server that answers
-`acceptance-demo <release>` on `/` and `UP` on `/actuator/health/readiness` and `/liveness`.
+[kvm-server](https://github.com/bobkubista/kvm-server)): a Java 25 HTTP server with a Hello world
+page on `/` (public on https://bobkubista.com, ADR-0030 in kvm-server), `acceptance-demo <release>`
+on `/version`, and `UP` on `/actuator/health/readiness` and `/liveness` (not public).
 
 ## How it is delivered
 
@@ -23,5 +24,6 @@ The smallest app that exercises the kvm-server delivery loop (ADR-0028 in
 ```bash
 mvn verify                                   # tests + JaCoCo coverage (fails below 80% lines/branches)
 docker build -t acceptance-demo --build-arg APP_VERSION=dev . && docker run -p 8080:8080 acceptance-demo
-curl localhost:8080/
+curl localhost:8080/                           # Hello world page
+curl localhost:8080/version                    # acceptance-demo dev
 ```
