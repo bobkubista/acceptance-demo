@@ -7,8 +7,26 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
-/** The smallest app that exercises the delivery loop: it says which release runs. */
+/**
+ * The smallest app that exercises the delivery loop: a Hello world page (public on bobkubista.com,
+ * ADR-0030 in kvm-server), and {@code /version} says which release runs.
+ */
 public final class App {
+
+  private static final String PAGE =
+      """
+      <!doctype html>
+      <html lang="en">
+      <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>bobkubista.com</title>
+      </head>
+      <body>
+      <h1>Hello world</h1>
+      </body>
+      </html>
+      """;
 
   private final HttpServer server;
 
@@ -27,7 +45,9 @@ public final class App {
   private static void handle(HttpExchange exchange, String version) throws IOException {
     String path = exchange.getRequestURI().getPath();
     switch (path) {
-      case "/" -> send(exchange, 200, "text/plain", "acceptance-demo " + version + "\n");
+      case "/" -> send(exchange, 200, "text/html; charset=utf-8", PAGE);
+      case "/version" ->
+          send(exchange, 200, "text/plain; charset=utf-8", "acceptance-demo " + version + "\n");
       case "/actuator/health/readiness", "/actuator/health/liveness" ->
           send(exchange, 200, "application/json", "{\"status\":\"UP\"}");
       default -> send(exchange, 404, "text/plain", "not found\n");

@@ -1,14 +1,15 @@
 # acceptance-demo — Context Prompt
 
 Last updated: 2026-10-20
-Verified against commit: 0fdcb99 + buildkit merge fix (branch `fix-buildkit-merge`)
+Verified against commit: 3fa71c0 + Hello world page (branch `hello-world`)
 
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a
   product; keep it minimal.
 - Stack: Java 25, JDK `com.sun.net.httpserver` (no framework), JUnit 6, JaCoCo, Maven; image
   from `eclipse-temurin:25-jre` (pinned by digest), runs as uid 65532.
-- Code: `src/main/java/demo/App.java` (routes `/`, `/actuator/health/{readiness,liveness}`),
+- Code: `src/main/java/demo/App.java` (routes `/` Hello world HTML, public on bobkubista.com through
+  kvm-server's entry point on .201 (ADR-0030); `/version`; `/actuator/health/{readiness,liveness}`),
   test `src/test/java/demo/AppTest.java` (starts the server on a free port).
 - Delivery: `Jenkinsfile` is kvm-server's `docs/examples/app-repo/Jenkinsfile` (Version and
   Release stages on master; branches push nothing). `k8s/` is the template's Deployment
