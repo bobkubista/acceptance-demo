@@ -14,6 +14,9 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'buildkit'          // shared pod template: BuildKit rootless + registry credentials
+      // merge, not the default override: otherwise the containers below replace the template's
+      // and container('buildkit') is missing ("container buildkit not found in pod")
+      yamlMergeStrategy merge()
       defaultContainer 'maven'
       yaml '''
         spec:
