@@ -32,8 +32,19 @@ class AppTest {
   }
 
   @Test
-  void rootTellsWhichReleaseRuns() throws Exception {
+  void rootIsAHelloWorldPage() throws Exception {
     HttpResponse<String> response = get("/");
+
+    assertEquals(200, response.statusCode());
+    assertEquals(
+        "text/html; charset=utf-8", response.headers().firstValue("Content-Type").orElse(""));
+    assertTrue(response.body().startsWith("<!doctype html>"), response.body());
+    assertTrue(response.body().contains("<h1>Hello world</h1>"), response.body());
+  }
+
+  @Test
+  void versionTellsWhichReleaseRuns() throws Exception {
+    HttpResponse<String> response = get("/version");
 
     assertEquals(200, response.statusCode());
     assertEquals("acceptance-demo 1.2.3\n", response.body());
