@@ -84,7 +84,7 @@
               <goal>report</goal>
             </goals>
           </execution>
-          <!-- the build fails below 80% line or branch coverage (currently 88% / 100%) -->
+          <!-- the build fails below 80% line or branch coverage -->
           <execution>
             <id>check</id>
             <phase>verify</phase>
