@@ -21,7 +21,7 @@ The smallest app that exercises the kvm-server delivery loop (ADR-0028 in
 ## Build locally
 
 ```bash
-mvn verify                                   # tests + JaCoCo coverage
+mvn verify                                   # tests + JaCoCo coverage (fails below 80% lines/branches)
 docker build -t acceptance-demo --build-arg APP_VERSION=dev . && docker run -p 8080:8080 acceptance-demo
 curl localhost:8080/
 ```

@@ -1,6 +1,7 @@
 # acceptance-demo — Context Prompt
 
-Last updated: 2026-10-19
+Last updated: 2026-10-20
+Verified against commit: 5692a8f + JaCoCo coverage gate (branch `initial-app`)
 
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a
