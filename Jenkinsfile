@@ -49,7 +49,6 @@ pipeline {
       when { not { expression { env.BRANCH_IS_PRIMARY == 'true' } } }
       steps {
         sh 'mvn -B -ntp verify'
-        recordCoverage(tools: [[parser: 'JACOCO']])
       }
     }
     // SonarQube Community has no branch analysis: only master is analysed
@@ -61,7 +60,6 @@ pipeline {
           sh 'git config --global --add safe.directory "$WORKSPACE"'
           sh 'mvn -B -ntp verify sonar:sonar'
         }
-        recordCoverage(tools: [[parser: 'JACOCO']])
       }
     }
     stage('Quality gate') {
@@ -129,6 +127,8 @@ pipeline {
   post {
     always {
       junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
+      // no source copy on the controller (disk); the coverage numbers and file list are kept
+      recordCoverage(tools: [[parser: 'JACOCO']], sourceCodeRetention: 'NEVER')
     }
   }
 }

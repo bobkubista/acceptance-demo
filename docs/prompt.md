@@ -1,7 +1,7 @@
 # acceptance-demo — Context Prompt
 
-Last updated: 2026-10-20
-Verified against commit: 3fa71c0 + Hello world page (branch `hello-world`)
+Last updated: 2026-10-21
+Verified against commit: fe78e0a + junit/coverage in post always (branch `jenkins-junit`)
 
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a

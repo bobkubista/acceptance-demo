@@ -20,6 +20,9 @@ on `/version`, and `UP` on `/actuator/health/readiness` and `/liveness` (not pub
 `acceptance/namespace/` and `acceptance/foreign-namespace/` are deliberately forbidden manifests for kvm-server's acceptance test
 (an app may not create a Namespace, nor objects in another namespace). Nothing deploys them on purpose.
 
+Rollout: merge the junit and coverage Jenkinsfile only after kvm-server's Jenkins has the `junit` and
+`coverage` plugins (its acceptance run green); without them the build fails.
+
 ## Build locally
 
 ```bash
