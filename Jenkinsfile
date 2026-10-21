@@ -10,6 +10,9 @@
 //     major.minor from the pom (raise them by hand). The image <version> is pushed first, then
 //     the Git tag v<version>; Argo CD Image Updater deploys the newest release.
 //   - Branches build and test, but push nothing and deploy nothing.
+//   - Test results (junit) and JaCoCo coverage show on every build. Maven resolves through Nexus
+//     maven-public: the pod template 'buildkit' mounts the settings and sets MAVEN_ARGS (k8s/jenkins.yml),
+//     so do not repeat -s or a mirror here.
 pipeline {
   agent {
     kubernetes {
@@ -119,6 +122,13 @@ pipeline {
           '''
         }
       }
+    }
+  }
+  post {
+    always {
+      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
+      // no source copy on the controller (disk); the coverage numbers and file list are kept
+      recordCoverage(tools: [[parser: 'JACOCO']], sourceCodeRetention: 'NEVER')
     }
   }
 }
