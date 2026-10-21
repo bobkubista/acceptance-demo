@@ -10,6 +10,9 @@
 //     major.minor from the pom (raise them by hand). The image <version> is pushed first, then
 //     the Git tag v<version>; Argo CD Image Updater deploys the newest release.
 //   - Branches build and test, but push nothing and deploy nothing.
+//   - Test results (junit) and JaCoCo coverage show on every build. Maven resolves through Nexus
+//     maven-public: the pod template 'buildkit' mounts the settings and sets MAVEN_ARGS (k8s/jenkins.yml),
+//     so do not repeat -s or a mirror here.
 pipeline {
   agent {
     kubernetes {
@@ -46,6 +49,7 @@ pipeline {
       when { not { expression { env.BRANCH_IS_PRIMARY == 'true' } } }
       steps {
         sh 'mvn -B -ntp verify'
+        recordCoverage(tools: [[parser: 'JACOCO']])
       }
     }
     // SonarQube Community has no branch analysis: only master is analysed
@@ -57,6 +61,7 @@ pipeline {
           sh 'git config --global --add safe.directory "$WORKSPACE"'
           sh 'mvn -B -ntp verify sonar:sonar'
         }
+        recordCoverage(tools: [[parser: 'JACOCO']])
       }
     }
     stage('Quality gate') {
@@ -119,6 +124,11 @@ pipeline {
           '''
         }
       }
+    }
+  }
+  post {
+    always {
+      junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
     }
   }
 }

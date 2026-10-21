@@ -7,7 +7,8 @@ on `/version`, and `UP` on `/actuator/health/readiness` and `/liveness` (not pub
 
 ## How it is delivered
 
-1. A push reaches Jenkins (GitHub webhook). Every branch builds and tests (`mvn verify`).
+1. A push reaches Jenkins (GitHub webhook). Every branch builds and tests (`mvn verify`); Jenkins shows the JUnit
+   results and the JaCoCo coverage of every build, and Maven dependencies come from the Nexus mirror.
 2. On `master` a green build (tests, SonarQube quality gate) is a release
    `<major>.<minor>.<build>`: major.minor from the pom (`1.0.0-SNAPSHOT` gives `1.0.<build>`).
    The image `registry.internal.bobkubista.com/acceptance-demo:<release>` is pushed first,
