@@ -23,6 +23,10 @@ on `/version`, and `UP` on `/actuator/health/readiness` and `/liveness` (not pub
 Rollout: merge the junit and coverage Jenkinsfile only after kvm-server's Jenkins has the `junit` and
 `coverage` plugins (its acceptance run green); without them the build fails.
 
+## Open items
+
+Open work is tracked in [docs/todo.md](docs/todo.md).
+
 ## Build locally
 
 ```bash

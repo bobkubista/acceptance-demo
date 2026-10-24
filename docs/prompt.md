@@ -1,7 +1,7 @@
 # acceptance-demo — Context Prompt
 
-Last updated: 2026-10-21
-Verified against commit: fe78e0a + junit/coverage in post always (branch `jenkins-junit`)
+Last updated: 2026-10-24
+Verified against commit: 3f1a2d4 (branch `wt/add-todo`)
 
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a
@@ -18,4 +18,5 @@ Verified against commit: fe78e0a + junit/coverage in post always (branch `jenkin
   (`app`) and Service (`api`), no Ingress; the release tag is set by Image Updater.
 - `acceptance/namespace/`: a Namespace manifest the platform must refuse (used by kvm-server's
   `tests/acceptance/apps-namespace-releases.sh`).
+- Open items: `docs/todo.md`.
 - Rules: test first; never commit on master without the owner's OK; the owner merges.
