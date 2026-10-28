@@ -8,7 +8,7 @@ Verified against commit: 3f1a2d4 (branch `wt/add-todo`)
   product; keep it minimal.
 - Stack: Java 25, JDK `com.sun.net.httpserver` (no framework), JUnit 6, JaCoCo, Maven; image
   from `eclipse-temurin:25-jre` (pinned by digest), runs as uid 65532.
-- Code: `src/main/java/demo/App.java` (routes `/` Hello world HTML, public on bobkubista.com through
+- Code: `src/main/java/demo/App.java` (routes `/` End of the internet HTML, public on bobkubista.com through
   kvm-server's entry point on .201 (ADR-0030); `/version`; `/actuator/health/{readiness,liveness}`),
   test `src/test/java/demo/AppTest.java` (starts the server on a free port).
 - Delivery: `Jenkinsfile` is kvm-server's `docs/examples/app-repo/Jenkinsfile` (Version and

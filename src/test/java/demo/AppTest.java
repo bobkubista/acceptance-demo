@@ -32,14 +32,14 @@ class AppTest {
   }
 
   @Test
-  void rootIsAHelloWorldPage() throws Exception {
+  void rootIsAnEndOfTheInternetPage() throws Exception {
     HttpResponse<String> response = get("/");
 
     assertEquals(200, response.statusCode());
     assertEquals(
         "text/html; charset=utf-8", response.headers().firstValue("Content-Type").orElse(""));
     assertTrue(response.body().startsWith("<!doctype html>"), response.body());
-    assertTrue(response.body().contains("<h1>Hello world</h1>"), response.body());
+    assertTrue(response.body().contains("<h1>End of the internet</h1>"), response.body());
   }
 
   @Test

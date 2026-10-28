@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The smallest app that exercises the delivery loop: a Hello world page (public on bobkubista.com,
+ * The smallest app that exercises the delivery loop: an End of the internet page (public on bobkubista.com,
  * ADR-0030 in kvm-server), and {@code /version} says which release runs.
  */
 public final class App {
@@ -23,7 +23,7 @@ public final class App {
       <title>bobkubista.com</title>
       </head>
       <body>
-      <h1>Hello world</h1>
+      <h1>End of the internet</h1>
       </body>
       </html>
       """;
