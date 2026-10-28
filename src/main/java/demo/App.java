@@ -8,8 +8,8 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The smallest app that exercises the delivery loop: an End of the internet page (public on bobkubista.com,
- * ADR-0030 in kvm-server), and {@code /version} says which release runs.
+ * The smallest app that exercises the delivery loop: a page that says End of the internet (public
+ * on bobkubista.com, ADR-0030 in kvm-server), and {@code /version} says which release runs.
  */
 public final class App {
 
