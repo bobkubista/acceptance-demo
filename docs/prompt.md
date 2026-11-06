@@ -6,7 +6,7 @@ Verified against commit: 005adb0 (branch `wt/end-of-internet`)
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a
   product; keep it minimal.
-- Stack: Java 25, JDK `com.sun.net.httpserver` (no framework), JUnit 6, JaCoCo, Maven; image
+- Stack: Java 25, JDK `com.sun.net.httpserver` (no framework), JUnit 6, JaCoCo, Maven (Spotless with google-java-format formats the Java code on every build); image
   from `eclipse-temurin:25-jre` (pinned by digest), runs as uid 65532.
 - Code: `src/main/java/demo/App.java` (routes `/` an HTML page saying End of the internet, public
   on bobkubista.com through kvm-server's entry point on .201 (ADR-0030); `/version`;

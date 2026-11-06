@@ -30,7 +30,7 @@ Open work is tracked in [docs/todo.md](docs/todo.md).
 ## Build locally
 
 ```bash
-mvn verify                                   # tests + JaCoCo coverage (fails below 80% lines/branches)
+mvn verify                                   # google-java-format (Spotless, applied at process-sources), tests + JaCoCo coverage (fails below 80% lines/branches)
 docker build -t acceptance-demo --build-arg APP_VERSION=dev . && docker run -p 8080:8080 acceptance-demo
 curl localhost:8080/                           # page saying End of the internet
 curl localhost:8080/version                    # acceptance-demo dev
