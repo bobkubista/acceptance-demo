@@ -1,7 +1,6 @@
 # acceptance-demo — Context Prompt
 
-Last updated: 2026-10-28
-Verified against commit: 005adb0 (branch `wt/end-of-internet`)
+Last updated: 2026-11-06
 
 - Purpose: test app for the kvm-server platform's delivery loop (one namespace `apps`, every
   green master build a release, rollback with `lab.sh`; ADR-0028 in kvm-server). It is not a
