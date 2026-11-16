@@ -63,4 +63,12 @@ class AppTest {
   void unknownPathIsNotFound() throws Exception {
     assertEquals(404, get("/nope").statusCode());
   }
+
+  @Test
+  void launchesWithoutArguments() throws Exception {
+    // `java -jar` passes no arguments; the Java 25 instance-less, parameterless main is the entry
+    // point
+    var main = App.class.getMethod("main");
+    assertTrue(java.lang.reflect.Modifier.isStatic(main.getModifiers()));
+  }
 }

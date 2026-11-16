@@ -72,7 +72,7 @@ public final class App {
     server.stop(0);
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main() throws IOException {
     String version = System.getenv().getOrDefault("APP_VERSION", "unknown");
     start(8080, version);
   }
